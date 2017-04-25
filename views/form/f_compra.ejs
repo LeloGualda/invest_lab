@@ -1,0 +1,64 @@
+
+<form action="/compra" method="post" >
+    <div class="row row-sm-offset">
+        <div class="col-xs-12 col-md-4">
+            <div class="form-group">
+                <label class="form-control-label" id="lab_comp_acao">AÇÃO</label>
+                  <script>
+    var descr = new Array();
+    function Descri(id,des) {
+      document.getElementById("compra_descricao").value = descr[id];
+      document.getElementById("codigo_produto").value = des;
+    }
+                  </script>
+       <input type="hidden"  class="form-control" name="codigo_produto" id="codigo_produto" value="<%=data[0].codigo_cadastro%>">
+               <select type="text" class="form-control" name="codigo_acao" id="codigo_acao"
+                onchange="Descri(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);">
+                  <% if(data.length){
+
+                   for(var i = 0;i < data.length;i++) { %>
+                      <script>descr[<%=(i)%>] = "<%=data[i].descricao_cadastro%>";</script>
+
+
+                      <option value="<%=(i)%>"><%=data[i].codigo_cadastro%></option>
+                      <% }
+                       }else{ %>
+
+                          <option value="null"> sem registros </option>
+                      <% } %>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-8">
+            <div class="form-group">
+                <label class="form-control-label">DESCRIÇÃO</label>
+    <input  disabled type="text" value=" <%=data[0].descricao_cadastro%>" class="form-control" name="compra_descricao" id="compra_descricao">
+
+
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_comp_qnt">QUANTIDADE</label>
+                <input type="number" class="form-control" name="quantidade_compra" id="quantidade_compra">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_comp_valort">VALOR</label>
+                <input  type="number" class="form-control" name="valor_compra" id="valor_compra">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_comp_valort">DATA DA COMPRA</label>
+                  <input class="form-control" type="date" name="compra_data" id="compra_data">
+            </div>
+        </div>
+      </div>
+
+    <div><button type="submit" class="btn btn-primary">COMPRAR</button></div>
+</form>

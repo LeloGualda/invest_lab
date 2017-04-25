@@ -1,0 +1,189 @@
+﻿diff --git a/conectMysql.js b/conectMysql.js
+index bbb5ca9..2fcb5a0 100644
+--- a/conectMysql.js
++++ b/conectMysql.js
+@@ -1,40 +1,63 @@
+-var express = require('express');
++
++/*
+ var mysql = require('mysql');
+-var app = express();
++
+ 
+ var conection = mysql.createConnection({
+   host:'daml.ddns.net',
+   user:'aurelio',
+   password:'Aurelio',
+   database:'investlab'
+ });
+ conection.connect(
+-  function functionName(error)
+-  {
+-    if(!!error)
+-    {
++  function functionName(error){
++    if(!!error){
+       console.log('deu ruim');
+-    }else
+-      {
++    }else{
+         console.log('foi!');
+         selectCadastro();
+       }
+   }
+ );
+ 
+ const selectCadastro = function () {
+   conection.query('SELECT * from t_cadastro', function (error, results, fields) {
+     if (error) throw error;
+-    console.log('Meu resultado: ', results[0]);
++    console.log('Meu resultado: ', results);
+     //this.state= results;
+   });
+ }
+-app.get('/', function(request, response) {
+-  //const resultado  = selectCadastro();
+-  //console.log(resultado);
++*/
+ 
+ 
+-  response.send(this.state);
++var mysql = require('mysql');
++
++var conection = mysql.createConnection({
++  host:'daml.ddns.net',
++  user:'aurelio',
++  password:'Aurelio',
++  database:'investlab'
+ });
++conection.connect(
++  function functionName(error){
++    if(!!error){
++      console.log('erro ao conectar!');
++    }else{
++        console.log('conectado ao banco de dados investlab');
++      }
++  }
++);
++
++exports.listCadastro = function(req, res){
++
++  req.getConnection(function(err,connection){
++
++        var query = connection.query('SELECT * FROM t_cadastro',function(err,rows){
++            //em caso de erro
++            if(err)
++                console.log("Error ao selecionar a  tabela cadastro : %s ",err );
+ 
+-app.listen(3000,() => console.log("executando..."));
++            res.render('pages/cadastro',{page_title:"Cadastro de Ações",data:rows});
++         });
++    });
++};
+diff --git a/index.js b/index.js
+index e0b15ff..7b77c38 100644
+--- a/index.js
++++ b/index.js
+@@ -1,20 +1,54 @@
++
+ var express = require('express');
+ var app = express();
+-
++var mysql = require('mysql');
+ app.set('port', (process.env.PORT || 5000));
+-
+ app.use(express.static(__dirname + '/public'));
+-
+ // views is directory for all template files
+ app.set('views', __dirname + '/views');
+ app.set('view engine', 'ejs');
+ 
+-app.get('/', function(request, response) {
++var conection = mysql.createConnection({
++  host:'daml.ddns.net',
++  user:'aurelio',
++  password:'Aurelio',
++  database:'investlab'
++});
++conection.connect(
++  function functionName(error){
++    if(!!error){
++      console.log('erro ao conectar!');
++    }else{
++        console.log('conectado ao banco de dados investlab');
++      }
++  }
++);
++
++//var ConMysql = require('./conectMysql');
++
++
++app.get('/', function(request, response,next) {
+   response.render('pages/index')
++  next()
++});
++
++
++app.use('/compra', function(request, response,next) {
++  response.render('pages/compra')
++  next()
+ });
+ 
++app.get('/cadastro', function(request, response,next) {
++//  response.render('pages/cadastro')
++var query = conection.query('SELECT * FROM t_cadastro',function(err,rows){
++    //em caso de erro
++    if(err)
++        console.log("Error ao selecionar a  tabela cadastro : %s ",err );
+ 
++    response.render('pages/cadastro',{page_title:"Cadastro de Ações",data:rows});
++ });
++});
+ 
+ app.listen(app.get('port'), function() {
+   console.log('Node app is running on port', app.get('port'));
+ });
+diff --git a/package.json b/package.json
+index d4862ea..e46dab1 100644
+--- a/package.json
++++ b/package.json
+@@ -1,26 +1,34 @@
+ {
+-  "name": "node-js-getting-started",
++  "name": "invest_lab",
+   "version": "0.2.6",
+   "description": "A sample Node.js app using Express 4",
+   "engines": {
+     "node": "6.10.2"
+   },
+   "main": "index.js",
+   "scripts": {
+     "start": "node index.js"
+   },
+   "dependencies": {
++    "cool-ascii-faces": "^1.3.4",
+     "ejs": "2.5.6",
+-    "express": "4.15.2"
++    "express": "4.15.2",
++    "mysql": "^2.10.2"
+   },
+   "repository": {
+     "type": "git",
+-    "url": "https://github.com/heroku/node-js-getting-started"
++    "url": "git+https://github.com/heroku/node-js-getting-started.git"
+   },
+   "keywords": [
+     "node",
+     "heroku",
+     "express"
+   ],
+-  "license": "MIT"
++  "license": "MIT",
++  "bugs": {
++    "url": "https://github.com/heroku/node-js-getting-started/issues"
++  },
++  "homepage": "https://github.com/heroku/node-js-getting-started#readme",
++  "devDependencies": {},
++  "author": "eng ibta 2017"
+ }
+

@@ -1,0 +1,109 @@
+
+<form action="/venda" method="post" >
+    <div class="row row-sm-offset">
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label" id="lab_vend_acao">AÇÃO</label>
+                <script>
+                $(document).ready(function () {
+                          $('#valor_venda,#IR,#quantidade_venda').change(function () { Lucro(); });
+                          $('#valor_venda,#IR,#quantidade_venda').on(function () { Lucro(); });
+                          $('#valor_venda,#IR,#quantidade_venda').keyup(function () { Lucro(); });
+                      });
+var obg_compra = new Array();
+      function Descri(id)
+      {
+        document.getElementById("valor_compra_M").value = obg_compra[id].val;
+        document.getElementById("valor_venda").value = 0 ;
+        document.getElementById("lab_vend_qnt").innerHTML  = "QUANTIDADE (1 a " + obg_compra[id].qnt  + ")";
+        Lucro();
+      }
+      function Lucro()
+      {
+        var val_qnt    = document.getElementById("quantidade_venda").value;
+        var val_Venda  = document.getElementById("valor_venda").value;
+        var val_Compra = document.getElementById("valor_compra_M").value;
+        var val_lucro  =  (val_Venda - val_Compra);
+        var val_ir     = document.getElementById("IR").value/ val_lucro;
+
+        document.getElementById("lucro_b").value = val_lucro * val_qnt ;
+        document.getElementById("lucro_l").value = (val_lucro - (val_lucro * val_ir)) * val_qnt;
+        document.getElementById("valor_compra").value = document.getElementById("valor_compra_M").value;
+      }
+
+                </script>
+
+         <select type="text" class="form-control" name="codigo_acao" id="codigo_acao"
+               onchange="Descri(this.options[this.selectedIndex].index);">
+
+                  <% if(data.length){
+                  for(var i = 0;i < data.length;i++) { %>
+                    <script>
+                       obg_compra[<%=(i)%>] =
+                        {
+                          val:"<%=data[i].valor_compra%>",
+                          qnt:"<%=data[i].quantidade_compra%>"
+                        };
+
+                      </script>
+                      <option value="<%=data[i].codigo_produto%>"><%=data[i].codigo_produto%></option>
+                  <% }
+                   }else{ %>
+                          <option value="null"> sem registros </option>
+                    <% } %>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_valor_compra">VALOR DA COMPRA</label>
+                      <input  value="<%=data[0].valor_compra%>" type="hidden" class="form-control" name="valor_compra" id="valor_compra">
+                  <input disabled value="<%=data[0].valor_compra%>" type="number" class="form-control" name="valor_compra_M" id="valor_compra_M">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_valor_venda">VALOR DA VENDA</label>
+                <input type="number" value="0"  class="form-control" name="valor_venda" id="valor_venda">
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"   id="lab_valor_venda">IR</label>
+                <input type="number"value="2" class="form-control" name="IR" id="IR">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_lucro_b">LUCRO BRUTO</label>
+                <input disabled type="number"value="0" class="form-control" name="lucro_b" id="lucro_b">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_lucro_l">LUCRO LIQUIDO</label>
+                <input disabled type="number" value="0" class="form-control" name="lucro_l" id="lucro_l">
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_vend_qnt">QUANTIDADE (1 a <%=data[0].quantidade_compra%>)</label>
+                <input type="number"  min="1" value="1"  class="form-control" name="quantidade_venda" id="quantidade_venda">
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_vend_datat">DATA DA COMPRA</label>
+                  <input class="form-control" type="date" name="data_venda" id="data_venda" >
+            </div>
+        </div>
+      </div>
+
+    <div><button type="submit" class="btn btn-primary">VENDER</button></div>
+</form>

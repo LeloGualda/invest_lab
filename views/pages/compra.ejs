@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+
+<div class="container">
+
+      <div class="row">
+          <div class="col-xs-12 col-lg-13 ">
+            <% include ../form/f_compra.ejs %>
+
+          </div>
+
+      </div>
+      <div class="row" style="margin-top:10px">
+          <div class="col-xs-12 col-lg-13">
+            <table class="table table-striped">
+                            <tr>
+                                <th >ID</th>
+                                <th>AÇÃO</th>
+                                <th>DESCRIÇÃO</th>
+                                <th>VALOR DA COMPRA</th>
+                                <th>DATA DA COMPRA</th>
+                            </tr>
+                            <% if(dataCompra.length){
+
+                             for(var i = 0;i < dataCompra.length;i++) { %>
+
+                            <tr>
+                                <td><%=(i+1)%></td>
+                                <td><%=dataCompra[i].codigo_produto%></td>
+                                <td><%=dataCompra[i].quantidade_compra%></td>
+                                <td><%=dataCompra[i].valor_compra%></td>
+                                <td><%=dataCompra[i].data_compra%></td>
+                            </tr>
+                        <% }
+
+                         }else{ %>
+                             <tr>
+                                <td colspan="3">sem cadastros</td>
+                             </tr>
+                        <% } %>
+                      </table>
+
+          </div>
+
+      </div>
+
+</div>
+
+
+</body>
+</html>

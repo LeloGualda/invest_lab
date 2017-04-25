@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+
+<div class="container">
+
+  <% include ../form/f_venda.ejs %>
+  <div class="row" style="margin-top:10px">
+      <div class="col-xs-12 col-lg-13">
+        <table class="table table-striped">
+                        <tr>
+                            <th >ID</th>
+                            <th>AÇÃO</th>
+                            <th>VALOR DA COMPRA</th>
+                            <th>VALOR DA VENDA</th>
+                            <th>LUCRO BRUTO </th>
+                            <th>LUCRO LQ.</th>
+                            <th>DATA DA VENDA </th>
+                        </tr>
+                        <% if(dataVenda.length){
+
+                         for(var i = 0;i < dataVenda.length;i++) { %>
+
+                        <tr>
+                            <td><%=(i+1)%></td>
+                            <td><%=dataVenda[i].t_produto_codigo_produto%></td>
+                            <td><%=dataVenda[i].valor_compra%></td>
+                            <td><%=dataVenda[i].valor_venda%></td>
+                            <td><%=dataVenda[i].lucrobruto_venda%></td>
+                            <td><%=dataVenda[i].lucroliquido_venda%></td>
+                            <td><%=dataVenda[i].data_venda%></td>
+                        </tr>
+                    <% }
+
+                     }else{ %>
+                         <tr>
+                            <td colspan="3">sem cadastros</td>
+                         </tr>
+                    <% } %>
+                  </table>
+
+      </div>
+
+  </div>
+
+</div>
+
+
+</body>
+</html>
