@@ -50,6 +50,8 @@ app.get('/compra', function(request, response,next)
       if(err){
           console.log("Error ao selecionar a  tabela cadastro : %s ",err );
           selectCadastro = err;
+          selectCompras = err;
+            response.render('pages/compra',{data:selectCadastro, dataCompra:selectCompras});
         }else {
             selectCadastro = rows;
             var queryCompras = conection.query('SELECT * FROM t_compra',function(errCompra,rowsCompra){
@@ -69,11 +71,12 @@ app.get('/compra', function(request, response,next)
 });
 
 app.get('/cadastro', function(request, response,next) {
-
 var query = conection.query('SELECT * FROM t_cadastro',function(err,rows){
     //em caso de erro
-    if(err)
-        console.log("Error ao selecionar a  tabela cadastro : %s ",err );
+    if(err){
+      response.render('pages/cadastro',{data:err});
+
+      }
    response.render('pages/cadastro',{data:rows});
 
  });
@@ -88,6 +91,8 @@ app.get('/venda', function(request, response,next) {
       if(err){
           console.log("Error ao selecionar a  tabela cadastro : %s ",err );
           selectCompras = err;
+          response.render('pages/venda',{data:err, dataVenda:err});
+
         }else {
             selectCompras = rows;
             var queryCompras = conection.query('SELECT * FROM t_venda',function(errVenda,rowsVenda){
@@ -106,23 +111,28 @@ app.get('/venda', function(request, response,next) {
 
 });
 
+const  validarString = function(str)
+{
+//  if(str == "") return false;
+return false;
+}
 app.post('/cadastro', function(request, response) {
 
 
  var input = JSON.parse(JSON.stringify(request.body));
 
- var data2 = {
+ 
+
+ var data2 =
+ {
     codigo_cadastro    : input.codigo_cadastro,
     descricao_cadastro : input.descricao_cadastro,
-
   };
+
 
 var query = conection.query("INSERT INTO t_cadastro set ? ",data2, function(err, rows)
       {
-
-        if (err)
-            console.log("Error inserting : %s ",err );
-            response.redirect('/cadastro');
+          response.redirect('/cadastro');
 
       });
 
@@ -162,16 +172,21 @@ app.post('/compra', function(request, response) {
 
  app.post('/venda', function(request, response) {
   var input = JSON.parse(JSON.stringify(request.body));
+
+  var valor_lucroB = (parseFloat(input.valor_venda) - parseFloat(input.valor_compra)) * parseInt(input.quantidade_venda) ;
+  var valor_lucroL  = valor_lucroB - (valor_lucroB * (input.IR /100));
+
   var dados = {
         t_produto_codigo_produto:input.codigo_acao,
         valor_compra:parseFloat(input.valor_compra),
         valor_venda:parseFloat(input.valor_venda),
-        lucrobruto_venda: (parseFloat(input.valor_venda) - parseFloat(input.valor_compra)) ,
-        lucroliquido_venda:  (parseFloat(input.valor_venda) - parseFloat(input.valor_compra)) -(parseFloat(input.valor_venda) - parseFloat(input.valor_compra)) *  (parseFloat(input.IR)/(parseFloat(input.valor_venda) - parseFloat(input.valor_compra))) ,
+        lucrobruto_venda: valor_lucroB ,
+        lucroliquido_venda:valor_lucroL,
         quantidade_venda:parseInt(input.quantidade_venda),
         data_venda: input.data_venda
       };
-    
+
+
 
      conection.query('INSERT INTO t_venda ( '+
        't_produto_codigo_produto, ' +

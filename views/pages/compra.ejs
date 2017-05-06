@@ -25,12 +25,24 @@
                             <tr>
                                 <th >ID</th>
                                 <th>AÇÃO</th>
-                                <th>DESCRIÇÃO</th>
+                                <th>QUANTIDADE</th>
                                 <th>VALOR DA COMPRA</th>
                                 <th>DATA DA COMPRA</th>
-                            </tr>
-                            <% if(dataCompra.length){
 
+                            </tr>
+                              <%  var date = new Array();
+                                      function formatDate(date)
+                                       {
+                                              var d = new Date(date),
+                                                  month = '' + (d.getMonth() + 1),
+                                                  day = '' + d.getDate(),
+                                                  year = d.getFullYear();
+                                              if (month.length < 2) month = '0' + month;
+                                              if (day.length < 2) day = '0' + day;
+                                              return [day, month,year ].join('/');
+                                      }
+
+                                  if(dataCompra.length){
                              for(var i = 0;i < dataCompra.length;i++) { %>
 
                             <tr>
@@ -38,7 +50,15 @@
                                 <td><%=dataCompra[i].codigo_produto%></td>
                                 <td><%=dataCompra[i].quantidade_compra%></td>
                                 <td><%=dataCompra[i].valor_compra%></td>
-                                <td><%=dataCompra[i].data_compra%></td>
+                                <td>
+                                  <%
+                                    date[i] = new Date(dataCompra[i].data_compra)
+                                  %>
+
+                                  <%=formatDate(date[i])%>
+
+
+                                </td>
                             </tr>
                         <% }
 

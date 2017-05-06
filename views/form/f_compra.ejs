@@ -6,14 +6,16 @@
                 <label class="form-control-label" id="lab_comp_acao">AÇÃO</label>
                   <script>
     var descr = new Array();
+    descr[-1] = "-";
     function Descri(id,des) {
       document.getElementById("compra_descricao").value = descr[id];
       document.getElementById("codigo_produto").value = des;
     }
                   </script>
-       <input type="hidden"  class="form-control" name="codigo_produto" id="codigo_produto" value="<%=data[0].codigo_cadastro%>">
+       <input type="hidden"  class="form-control" name="codigo_produto" id="codigo_produto" value="-">
                <select type="text" class="form-control" name="codigo_acao" id="codigo_acao"
                 onchange="Descri(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);">
+                  <option value="-1">SELECIONAR</option>
                   <% if(data.length){
 
                    for(var i = 0;i < data.length;i++) { %>
@@ -34,7 +36,7 @@
         <div class="col-xs-12 col-md-8">
             <div class="form-group">
                 <label class="form-control-label">DESCRIÇÃO</label>
-    <input  disabled type="text" value=" <%=data[0].descricao_cadastro%>" class="form-control" name="compra_descricao" id="compra_descricao">
+    <input  disabled type="text" value=" -" class="form-control" name="compra_descricao" id="compra_descricao">
 
 
             </div>
@@ -55,10 +57,25 @@
         <div class="col-xs-12 col-md-2">
             <div class="form-group">
                 <label class="form-control-label"  id="lab_comp_valort">DATA DA COMPRA</label>
-                  <input class="form-control" type="date" name="compra_data" id="compra_data">
+                  <input class="form-control" type="date"  name="compra_data" id="compra_data">
             </div>
         </div>
       </div>
+        <script>
+        var hoje =formatDate(new Date());
+        function formatDate(date)
+         {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
 
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+
+                return [year, month, day].join('-');
+        }
+        document.getElementById("compra_data").value = hoje;
+        </script>
     <div><button type="submit" class="btn btn-primary">COMPRAR</button></div>
 </form>

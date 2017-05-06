@@ -9,13 +9,21 @@
                           $('#valor_venda,#IR,#quantidade_venda').change(function () { Lucro(); });
                           $('#valor_venda,#IR,#quantidade_venda').on(function () { Lucro(); });
                           $('#valor_venda,#IR,#quantidade_venda').keyup(function () { Lucro(); });
+                          $('#valor_venda,#IR,#quantidade_venda').keyCode(function () { Lucro(); });
                       });
-var obg_compra = new Array();
+var obj_compra = new Array();
+obj_compra[-1] =
+ {
+   val: 0,
+   qnt:0
+ };
+
       function Descri(id)
       {
-        document.getElementById("valor_compra_M").value = obg_compra[id].val;
+        console.log(id);
+        document.getElementById("valor_compra_M").value = obj_compra[id].val;
         document.getElementById("valor_venda").value = 0 ;
-        document.getElementById("lab_vend_qnt").innerHTML  = "QUANTIDADE (1 a " + obg_compra[id].qnt  + ")";
+        document.getElementById("lab_vend_qnt").innerHTML  = "QUANTIDADE (1 a " + obj_compra[id].qnt  + ")";
         Lucro();
       }
       function Lucro()
@@ -23,23 +31,23 @@ var obg_compra = new Array();
         var val_qnt    = document.getElementById("quantidade_venda").value;
         var val_Venda  = document.getElementById("valor_venda").value;
         var val_Compra = document.getElementById("valor_compra_M").value;
-        var val_lucro  =  (val_Venda - val_Compra);
-        var val_ir     = document.getElementById("IR").value/ val_lucro;
+        var val_lucro  =  (val_Venda - val_Compra) * val_qnt;
+        var val_ir     = (document.getElementById("IR").value/100);
 
-        document.getElementById("lucro_b").value = val_lucro * val_qnt ;
-        document.getElementById("lucro_l").value = (val_lucro - (val_lucro * val_ir)) * val_qnt;
+        document.getElementById("lucro_b").value = val_lucro  ;
+        document.getElementById("lucro_l").value = val_lucro - (val_lucro * val_ir)
         document.getElementById("valor_compra").value = document.getElementById("valor_compra_M").value;
       }
 
                 </script>
 
          <select type="text" class="form-control" name="codigo_acao" id="codigo_acao"
-               onchange="Descri(this.options[this.selectedIndex].index);">
-
+               onchange="Descri( (this.options[this.selectedIndex].index-1));">
+                  <option value="-1">-</option>
                   <% if(data.length){
                   for(var i = 0;i < data.length;i++) { %>
                     <script>
-                       obg_compra[<%=(i)%>] =
+                       obj_compra[<%=(i)%>] =
                         {
                           val:"<%=data[i].valor_compra%>",
                           qnt:"<%=data[i].quantidade_compra%>"
@@ -59,8 +67,8 @@ var obg_compra = new Array();
         <div class="col-xs-12 col-md-2">
             <div class="form-group">
                 <label class="form-control-label"  id="lab_valor_compra">VALOR DA COMPRA</label>
-                      <input  value="<%=data[0].valor_compra%>" type="hidden" class="form-control" name="valor_compra" id="valor_compra">
-                  <input disabled value="<%=data[0].valor_compra%>" type="number" class="form-control" name="valor_compra_M" id="valor_compra_M">
+                      <input  value="0" type="hidden" class="form-control" name="valor_compra" id="valor_compra">
+                  <input disabled value="0" type="number" class="form-control" name="valor_compra_M" id="valor_compra_M">
             </div>
         </div>
         <div class="col-xs-12 col-md-2">
@@ -91,7 +99,7 @@ var obg_compra = new Array();
 
         <div class="col-xs-12 col-md-2">
             <div class="form-group">
-                <label class="form-control-label"  id="lab_vend_qnt">QUANTIDADE (1 a <%=data[0].quantidade_compra%>)</label>
+                <label class="form-control-label"  id="lab_vend_qnt">QUANTIDADE (1 a 1)</label>
                 <input type="number"  min="1" value="1"  class="form-control" name="quantidade_venda" id="quantidade_venda">
             </div>
         </div>
@@ -104,6 +112,22 @@ var obg_compra = new Array();
             </div>
         </div>
       </div>
+      <script>
+      Descri(-1);
+      var hoje = formatDate(new Date());
+      function formatDate(date)
+       {
+              var d = new Date(date),
+                  month = '' + (d.getMonth() + 1),
+                  day = '' + d.getDate(),
+                  year = d.getFullYear();
 
+              if (month.length < 2) month = '0' + month;
+              if (day.length < 2) day = '0' + day;
+
+              return [year, month, day].join('-');
+      }
+      document.getElementById("data_venda").value = hoje;
+      </script>
     <div><button type="submit" class="btn btn-primary">VENDER</button></div>
 </form>
