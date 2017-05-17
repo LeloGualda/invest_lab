@@ -7,6 +7,7 @@ var path = require('path');
 var json = require('express-json');
 var urlencode = require('urlencode');
 var bodyParser = require('body-parser');
+const  validar = require('./valida_BD');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
@@ -32,7 +33,6 @@ conection.connect(
       }
   }
 );
-
 
 
 app.get('/', function(request, response,next) {
@@ -84,8 +84,10 @@ var query = conection.query('SELECT * FROM t_cadastro',function(err,rows){
 });
 
 app.get('/venda', function(request, response,next) {
+
   var selectCompras  =   null;
   var selectVendas   =   null;
+
   var query = conection.query('SELECT * FROM t_compra',function(err,rows){
       //em caso de erro
       if(err){
@@ -111,30 +113,25 @@ app.get('/venda', function(request, response,next) {
 
 });
 
-const  validarString = function(str)
-{
-//  if(str == "") return false;
-return false;
-}
 app.post('/cadastro', function(request, response) {
-
 
  var input = JSON.parse(JSON.stringify(request.body));
 
- 
-
- var data2 =
+ var dados =
  {
     codigo_cadastro    : input.codigo_cadastro,
     descricao_cadastro : input.descricao_cadastro,
   };
+var vald = validar.Cadastro(dados);
 
 
-var query = conection.query("INSERT INTO t_cadastro set ? ",data2, function(err, rows)
+if(vald == true){
+  var query = conection.query("INSERT INTO t_cadastro set ? ",dados, function(err, rows)
       {
           response.redirect('/cadastro');
-
       });
+}
+else response.redirect('/cadastro');
 
 
 });
@@ -143,7 +140,6 @@ var query = conection.query("INSERT INTO t_cadastro set ? ",data2, function(err,
 app.post('/compra', function(request, response) {
 
  var input = JSON.parse(JSON.stringify(request.body));
-
  var dados = {
     codigo_produto: input.codigo_produto ,
     quantidade_compra:parseInt(input.quantidade_compra),
@@ -151,23 +147,30 @@ app.post('/compra', function(request, response) {
     data_compra:input.compra_data
   };
 
-    conection.query('INSERT INTO t_compra ( '+
-      'codigo_produto, ' +
-      'quantidade_compra,' +
-      'valor_compra,'+
-      'data_compra)'+
-       'VALUES("' +
-        dados.codigo_produto +'",'+
-        dados.quantidade_compra +','+
-        dados.valor_compra +',"'+
-        dados.data_compra + '")',
-        function (error, results, fields) {
-          if (error) throw error;
-            response.redirect('/compra');
-        }
+var vald = validar.Compra(dados);
 
-      );
-    });
+if(vald){
+          conection.query('INSERT INTO t_compra ( '+
+            'codigo_produto, ' +
+            'quantidade_compra,' +
+            'valor_compra,'+
+            'data_compra)'+
+             'VALUES("' +
+              dados.codigo_produto +'",'+
+              dados.quantidade_compra +','+
+              dados.valor_compra +',"'+
+              dados.data_compra + '")',
+              function (error, results, fields) {
+            //    if (error) throw error;
+                  response.redirect('/compra');
+              }
+
+            );
+        }
+  else {
+     response.redirect('/compra');
+   }
+  });
 
 
  app.post('/venda', function(request, response) {
@@ -186,28 +189,30 @@ app.post('/compra', function(request, response) {
         data_venda: input.data_venda
       };
 
-
-
-     conection.query('INSERT INTO t_venda ( '+
-       't_produto_codigo_produto, ' +
-       'valor_compra,' +
-       'valor_venda,' +
-       'lucrobruto_venda,' +
-       'lucroliquido_venda,' +
-       'quantidade_venda,' +
-       'data_venda)'+
-       'VALUES("' +
-            dados.t_produto_codigo_produto +  '",'  +
-            dados.valor_compra  + ','  +
-            dados.valor_venda + ','  +
-            dados.lucrobruto_venda +  ','  +
-            dados.lucroliquido_venda +  ','  +
-            dados.quantidade_venda +  ',"'  +
-            dados.data_venda + '")',
-         function (error, results, fields) {
-           if (error) throw error;
-           response.redirect('/venda');
-      });
+  var vald = validar.Venda(dados);
+if(vald){
+       conection.query('INSERT INTO t_venda ( '+
+         't_produto_codigo_produto, ' +
+         'valor_compra,' +
+         'valor_venda,' +
+         'lucrobruto_venda,' +
+         'lucroliquido_venda,' +
+         'quantidade_venda,' +
+         'data_venda)'+
+         'VALUES("' +
+              dados.t_produto_codigo_produto +  '",'  +
+              dados.valor_compra  + ','  +
+              dados.valor_venda + ','  +
+              dados.lucrobruto_venda +  ','  +
+              dados.lucroliquido_venda +  ','  +
+              dados.quantidade_venda +  ',"'  +
+              dados.data_venda + '")',
+           function (error, results, fields) {
+             if (error) throw error;
+             response.redirect('/venda');
+        });
+      }
+    else{response.redirect('/venda');}
   });
 
 
