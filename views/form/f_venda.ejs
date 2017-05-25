@@ -9,13 +9,14 @@
                           $('#valor_venda,#IR,#quantidade_venda').change(function () { Lucro(); });
                           $('#valor_venda,#IR,#quantidade_venda').on(function () { Lucro(); });
                           $('#valor_venda,#IR,#quantidade_venda').keyup(function () { Lucro(); });
-                          $('#valor_venda,#IR,#quantidade_venda').keyCode(function () { Lucro(); });
+                          //$('#valor_venda,#IR,#quantidade_venda').keyCode(function () { Lucro(); });
                       });
 var obj_compra = new Array();
 obj_compra[-1] =
  {
    val: 0,
-   qnt:0
+   qnt:0,
+   media:0
  };
 
       function Descri(id)
@@ -24,7 +25,11 @@ obj_compra[-1] =
         document.getElementById("valor_compra_M").value = obj_compra[id].val;
         document.getElementById("valor_venda").value = 0 ;
         document.getElementById("lab_vend_qnt").innerHTML  = "QUANTIDADE (1 a " + obj_compra[id].qnt  + ")";
+        document.getElementById("media").value = obj_compra[id].media;
+
         Lucro();
+        console.log(obj_compra);
+
       }
       function Lucro()
       {
@@ -34,6 +39,7 @@ obj_compra[-1] =
         var val_lucro  =  (val_Venda - val_Compra) * val_qnt;
         var val_ir     = (document.getElementById("IR").value/100);
 
+//console.log(obj_compra);
         document.getElementById("lucro_b").value = val_lucro  ;
         document.getElementById("lucro_l").value = val_lucro - (val_lucro * val_ir)
         document.getElementById("valor_compra").value = document.getElementById("valor_compra_M").value;
@@ -50,7 +56,8 @@ obj_compra[-1] =
                        obj_compra[<%=(i)%>] =
                         {
                           val:"<%=data[i].valor_compra%>",
-                          qnt:"<%=data[i].quantidade_compra%>"
+                          qnt:"<%=data[i].quantidade_compra%>",
+                          media:"<%=data[i].media%>"
                         };
 
                       </script>
@@ -103,7 +110,12 @@ obj_compra[-1] =
                 <input type="number"  min="1" value="1"  class="form-control" name="quantidade_venda" id="quantidade_venda">
             </div>
         </div>
-
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_vend_media">MÉDIA</label>
+                <input type="text" class="form-control" name="media" id="media">
+            </div>
+        </div>
 
         <div class="col-xs-12 col-md-2">
             <div class="form-group">

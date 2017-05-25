@@ -3,7 +3,7 @@
 <head>
 
   <% include ../partials/header.ejs %>
-  
+
 </head>
 
 <body>
@@ -11,15 +11,17 @@
   <% include ../partials/nav.ejs %>
 
 <div class="container">
-  <% include ../form/f_cadastro.ejs %>
+
+    <% include ../form/f_select_cadastro.ejs%>
 
 <div class="table-responsive" >
   <table class="table table-striped">
                   <tr>
-                      <th >ID</th>
+                      <th>ID</th>
                       <th>AÇÃO</th>
                       <th>DESCRIÇÃO</th>
-
+                      <th>EXCLUIR </th>
+                      <th>EDITAR</th>
                   </tr>
                   <% if(data.length){
 
@@ -29,6 +31,11 @@
                       <td><%=(i+1)%></td>
                       <td><%=data[i].codigo_cadastro%></td>
                       <td><%=data[i].descricao_cadastro%></td>
+                      <td>
+                          <% include ../form/f_delete_cadastro.ejs%>
+                      </td>
+                        <td> <i class="material-icons" style="font-size:36px">border_color</i>
+                          </td>
                   </tr>
               <% }
 

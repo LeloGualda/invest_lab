@@ -40,7 +40,29 @@ app.get('/', function(request, response,next) {
   next();
 });
 
+app.post('/DeleteCompra', function(request, response,next) {
+ var input = JSON.parse(JSON.stringify(request.body));
 
+   var query = conection.query('DELETE FROM investlab.t_compra where codigo_compra = "' + input.codigo_compra + '"',function(err,rows){
+        if(err)
+            console.log("Error ao selecionar a  tabela cadastro : %s ",err );
+        else
+            console.log(input.codigo_compra + '  deletado');
+        response.redirect('/compra');
+      });
+ });
+
+ app.post('/DeleteCadastro', function(request, response,next) {
+  var input = JSON.parse(JSON.stringify(request.body));
+
+    var query = conection.query('DELETE FROM investlab.t_cadastro where codigo_cadastro = "' + input.codigo_produto + '"',function(err,rows){
+         if(err)
+             console.log("Error ao selecionar a  tabela cadastro : %s ",err );
+         else
+             console.log(input.codigo_produto + '  deletado');
+         response.redirect('/cadastro');
+       });
+  });
 app.get('/compra', function(request, response,next)
 {
   var selectCadastro  =   null;
@@ -83,12 +105,19 @@ var query = conection.query('SELECT * FROM t_cadastro',function(err,rows){
 
 });
 
+app.get('/cadastro/edit',function(request,response,next){
+response.render('pages/edit_cadastro');
+});
 app.get('/venda', function(request, response,next) {
 
   var selectCompras  =   null;
   var selectVendas   =   null;
-
-  var query = conection.query('SELECT * FROM t_compra',function(err,rows){
+  var stringSQL = "Select sum(quantidade_compra) as quantidade_compra,"   +
+  "sum(valor_compra) as valor_compra, sum(valor_total) as valor_total," +
+   "round((sum(valor_total)/sum(quantidade_compra) ),2) as media,"        +
+ "codigo_produto from t_compra group by codigo_produto";
+console.log(stringSQL);
+  var query = conection.query(stringSQL,function(err,rows){
       //em caso de erro
       if(err){
           console.log("Error ao selecionar a  tabela cadastro : %s ",err );
@@ -103,6 +132,7 @@ app.get('/venda', function(request, response,next) {
                   selectVendas = errVenda;
                 }else {
                 selectVendas =  rowsVenda;
+                console.log(selectCompras);
                 response.render('pages/venda',{data:selectCompras, dataVenda:selectVendas});
                 next();
               }
@@ -144,24 +174,31 @@ app.post('/compra', function(request, response) {
     codigo_produto: input.codigo_produto ,
     quantidade_compra:parseInt(input.quantidade_compra),
     valor_compra: parseFloat(input.valor_compra),
-    data_compra:input.compra_data
+    data_compra:input.compra_data,
+    valor_total: (parseFloat(input.quantidade_compra) * parseFloat(input.valor_compra))
   };
 
 var vald = validar.Compra(dados);
 
+console.log("entrou");
+var stringSQL = 'INSERT INTO t_compra ( '+
+  'codigo_produto, ' +
+  'quantidade_compra,' +
+  'valor_compra,'+
+  'valor_total,'+
+  'data_compra)'+
+   'VALUES("' +
+    dados.codigo_produto +'",'+
+    dados.quantidade_compra +','+
+    dados.valor_compra +','+
+    dados.valor_total +',"'+
+    dados.data_compra + '")';
+
 if(vald){
-          conection.query('INSERT INTO t_compra ( '+
-            'codigo_produto, ' +
-            'quantidade_compra,' +
-            'valor_compra,'+
-            'data_compra)'+
-             'VALUES("' +
-              dados.codigo_produto +'",'+
-              dados.quantidade_compra +','+
-              dados.valor_compra +',"'+
-              dados.data_compra + '")',
+  console.log(stringSQL);
+          conection.query(stringSQL,
               function (error, results, fields) {
-            //    if (error) throw error;
+                if (error) console.log(error) ;
                   response.redirect('/compra');
               }
 

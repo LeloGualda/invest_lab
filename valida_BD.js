@@ -17,9 +17,14 @@ if(str.length>6)
 
   else return true;
 }
+
 function Desc(str){
-  if(str.length>30)return("O máximo 30 caracteres");
-    if(str.length<1)return("Preencher ao menos 1 caracter");
+    if(str.length>30)
+          return("O máximo 30 caracteres");
+    if(str.length<1)
+          return("Preencher ao menos 1 caracter");
+    if(str == '-')
+          return("valor invalido");
       return true;
 }
 // campos cadastro->compra
