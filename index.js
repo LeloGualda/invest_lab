@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 const  validar = require('./valida_BD');
 
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public/'));
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -19,9 +19,9 @@ app.use(bodyParser());
 app.use(json());
 
 var conection = mysql.createConnection({
-  host:'daml.ddns.net',
-  user:'aurelio',
-  password:'Aurelio',
+  host:'investlab.ddns.net',
+  user:'investlab',
+  password:'Investlab',
   database:'investlab'
 });
 conection.connect(
@@ -39,6 +39,10 @@ app.get('/', function(request, response,next) {
   response.render('pages/index')
   next();
 });
+
+app.use('/cadastro/update',function(request,response){
+  response.render('form/f_update_cadastro');
+} );
 
 app.post('/DeleteCompra', function(request, response,next) {
  var input = JSON.parse(JSON.stringify(request.body));
@@ -180,7 +184,7 @@ app.post('/compra', function(request, response) {
 
 var vald = validar.Compra(dados);
 
-console.log("entrou");
+
 var stringSQL = 'INSERT INTO t_compra ( '+
   'codigo_produto, ' +
   'quantidade_compra,' +
