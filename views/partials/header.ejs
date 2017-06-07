@@ -6,3 +6,25 @@
   <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
 <link rel="shortcut icon" href="/logo128x128.jpg" type="image/x-icon">
+<script>
+
+var msg = new Array(-1,<%=msg%>) ;
+msg.map(function(n){if(n > -1) alert(MsgErro(n))});
+
+function MsgErro(id){
+    var erros = new Array();
+    erros[0] = "A acão máximo 6 caracteres.";
+    erros[1] = "Preencher ao menos 1 caracter na ação.";
+    erros[2] = "Selecione um registro.";
+    erros[3] = "Não há  ação no momento.";
+    erros[4] = "O máximo 30 caracteres.";
+    erros[5] = "Preencher ao menos 1 caracter.";
+    erros[6] = "valor invalido.";
+    erros[7] = "Quantidade inválido.";
+    erros[8] = "Valor inválido.";
+    erros[9] = "IR Inválido";
+    erros[10] = "IR acima do limite";
+    return erros[id]
+}
+
+</script>

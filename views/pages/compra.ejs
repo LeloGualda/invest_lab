@@ -1,14 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+  <link rel="stylesheet" type="text/css" href="/stylesheets/css/showPage.css" />
   <% include ../partials/header.ejs %>
+  <script src="/js/showPage.js"> </script>
+  <script >
+  function UpdateCompra(acao,qnt,val,id){
+      document.getElementById("dsb_cod").value = acao;
+      document.getElementById("dsb_qnt").value = qnt;
+      document.getElementById("dsb_val").value = val;
+      document.getElementById("trc_cod").value = acao;
+      document.getElementById("trc_qnt").value = qnt;
+      document.getElementById("trc_val").value = val;
+      document.getElementById("id_up_compra").value = parseInt(id);
 
+  OpenFout();
+  };
+ </script>
 </head>
 
 <body>
+  <% include ../showPage/compra.ejs%>
 
-  <% include ../partials/nav.ejs %>
+  <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+    <div class="container">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/"> <span class="glyphicon glyphicon-home"></span> </a>
+        </li>
+        <li>
+          <a href="/cadastro"><span class="glyphicon glyphicon-pencil"></span> CADASTRA AÇÕES</a>
+        </li>
+        <li  class="active">
+          <a href="/compra"><span class="glyphicon glyphicon-shopping-cart"></span> COMPRAR AÇÕES</a>
+        </li>
+        <li>
+          <a href="/venda"><span class="glyphicon glyphicon-usd"></span> VENDER AÇÕES</a>
+        </li>
+        <li>
+          <a href="/relatorio"><span class="glyphicon glyphicon-file"></span> RELATÓRIO</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="navbar-right">
+          <a href=" https://github.com/LeloGualda/INVEST_LAB.git"><span class="glyphicon glyphicon-book"></span>  GITHUB</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
 
 <div class="container">
@@ -30,6 +69,7 @@
                                 <th>VALOR DA COMPRA</th>
                                 <th>TOTAL</th>
                                 <th>DATA DA COMPRA</th>
+                                <th>EXCLUIR</th>
                                 <th>EDITAR</th>
                             </tr>
                               <%  var date = new Array();
@@ -63,8 +103,14 @@
 
                                 </td>
                                 <td>
-                                    <% include ../form/f_delete_compra.ejs%>
+                                  <% include ../form/f_delete_compra.ejs%>
+
                                 </td>
+                          <td>
+                            <a>
+                                  <i  onclick="UpdateCompra('<%=dataCompra[i].codigo_produto%>','<%=dataCompra[i].quantidade_compra%>','<%=dataCompra[i].valor_compra%>','<%=dataCompra[i].codigo_compra%>')" class="material-icons" style="font-size:36px">border_color</i>
+                            </a>
+                          </td>
                             </tr>
                         <% }
 

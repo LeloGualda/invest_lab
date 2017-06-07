@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+
+<body>
+  <form action="/UpdateCompra" method="post" >
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div class="form-group">
+                  <label class="form-control-label"  id="lab_comp_acao">AÇÃO</label>
+                <input type="hidden"  class="form-control" name="trc_cod" id="trc_cod">
+                <input type="text" disabled class="form-control" name="dsb_cod" id="dsb_cod">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_comp_qnt">QUANTIDADE</label>
+                <input type="hidden"  class="form-control" name="trc_qnt" id="trc_qnt">
+                <input type="number" disabled class="form-control" name="dsb_qnt" id="dsb_qnt">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-2">
+            <div class="form-group">
+                <label class="form-control-label"  id="lab_comp_valort">VALOR</label>
+  <input  type="hidden"  class="form-control" name="trc_val" id="trc_val">
+                <input  type="number" disabled class="form-control" name="dsb_val" id="dsb_val">
+            </div>
+        </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-2">
+        <div class="form-group">
+            <label class="form-control-label"  id="lab_comp_valort">VALOR</label>
+            <input  type="number" class="form-control" name="att_val" id="att_val">
+        </div>
+    </div>
+      <div class="col-xs-12 col-md-2">
+          <div class="form-group">
+              <label class="form-control-label"  id="lab_comp_qnt">QUANTIDADE</label>
+              <input type="number" class="form-control" name="att_qnt" id="att_qnt">
+          </div>
+      </div>
+      <input type="hidden"  class="form-control" name="id_up_compra" id="id_up_compra">
+
+  </div>
+      <div>
+        <button type="submit" class="btn btn-primary">ATUALIZAR</button>
+      </div>
+
+  </form>
+</body>
+</html>

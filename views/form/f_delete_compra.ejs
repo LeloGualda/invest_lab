@@ -1,6 +1,11 @@
 <form action="/DeleteCompra" method="post" >
          <input type="hidden"  class="form-control" name="codigo_compra"  value="<%=dataCompra[i].codigo_compra%>">
+         <input type="hidden"  class="form-control" name="codigo_produto"  value="<%=dataCompra[i].codigo_produto%>">
+         <input type="hidden"  class="form-control" name="quantidade_compra"  value="<%=dataCompra[i].quantidade_compra%>">
+          <input type="hidden"  class="form-control" name="valor_total"  value="<%=dataCompra[i].valor_compra%>">
+
          <button type="submit" type="button" class="btn btn-danger">
          <span class="glyphicon glyphicon-remove"></span>
+
 </button>
 </form>

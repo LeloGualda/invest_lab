@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<% include ../partials/header.ejs %>
+  <style>
+  canvas{
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+
+  }
+  </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+      <div class="container">
+        
+        <ul class="nav navbar-nav">
+          <li >
+            <a href="/"> <span class="glyphicon glyphicon-home"></span> </a>
+          </li>
+          <li >
+            <a href="/cadastro"><span class="glyphicon glyphicon-pencil"></span> CADASTRA AÇÕES</a>
+          </li>
+          <li>
+            <a href="/compra"><span class="glyphicon glyphicon-shopping-cart"></span> COMPRAR AÇÕES</a>
+          </li>
+          <li>
+            <a href="/venda"><span class="glyphicon glyphicon-usd"></span> VENDER AÇÕES</a>
+          </li>
+          <li class="active">
+            <a href="/relatorio"><span class="glyphicon glyphicon-file"></span> RELATÓRIO</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="navbar-right">
+            <a href=" https://github.com/LeloGualda/INVEST_LAB.git"><span class="glyphicon glyphicon-book"></span>  GITHUB</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+<div class="container">
+
+
+</canvas><canvas id="myChart"></canvas>
+
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [
+      ],
+    datasets: [{
+      label: 'Compras',
+      data: [12, 19, 3, 17, 6, 3, 7],
+      backgroundColor: "rgba(153,255,51,0.4)"
+    }, {
+      label: 'Vendas',
+      data: [2, 29, 5, 5, 2, 3, 10],
+      backgroundColor: "rgba(255,153,0,0.4)"
+    }]
+  }
+});
+ </script>
+</body>
+</html>

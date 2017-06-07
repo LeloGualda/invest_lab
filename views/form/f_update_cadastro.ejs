@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <% include ../partials/header.ejs %>
-</head>
+
 <body>
   <form action="/UpdateCadastro" method="post" >
+    <div class="row row-sm-offset">
+        <div class="col-xs-12 col-md-4">
+            <div class="form-group">
+                <input type="hidden" class="form-control" name="codigo_h" id="codigo_h">
+                  <label class="form-control-label"  id="lab_comp_acao">AÇÃO</label>
+                <input type="text" disabled class="form-control" name="codigo_atual" id="codigo_atual">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-8">
+            <div class="form-group">
+                <input  type="hidden" class="form-control" name="descrica_h" id="descrica_h">
+                <label class="form-control-label">DESCRIÇÃO</label>
+                <input  type="text" disabled  class="form-control" name="descrica_atual" id="descrica_atual">
+            </div>
+        </div>
+      </div>
+
     <div class="row row-sm-offset">
         <div class="col-xs-12 col-md-4">
             <div class="form-group">
